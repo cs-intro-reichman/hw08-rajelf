@@ -53,7 +53,7 @@ class PlayList {
      */
     //// For an efficient implementation, use StringBuilder.
     public String toString() {
-        // i don't know howto use StringBuilder :)
+        // i don't know howto use StringBuilder, looked at it in google and didn´t quite understand :)
 
         String result = ""; // Start with an empty string
         for (int i = 0; i < size; i++) {
@@ -112,7 +112,6 @@ class PlayList {
     if (i < 0 || i > size || size == maxSize) {
         return false;
     }
-    //shift elements to make room for the nown btrack
     for (int j = size; j > i; j--) {
         tracks[j] = tracks[j - 1];
     }
@@ -147,9 +146,9 @@ class PlayList {
      * is negative or too big for this list, does nothing.
      */
     public void remove(String title) {
-        int index = indexOf(title); // Find the index of the track
+        int index = indexOf(title); 
         if (index != -1) { 
-            remove(index); // Remove the track at the found index
+            remove(index); 
         }
     }
 
@@ -158,7 +157,7 @@ class PlayList {
      */
     public void removeFirst() {
         if (size > 0) { 
-            System.arraycopy(tracks, 1, tracks, 0, size - 1); // Shift elements to remove the first track with the most useful sustem method
+            System.arraycopy(tracks, 1, tracks, 0, size - 1); 
             tracks[--size] = null;
         }
     }
@@ -169,7 +168,11 @@ class PlayList {
      */
     //// An elegant and terribly inefficient implementation.
     public void add(PlayList other) {
-        //// replace this comment with your code
+       if(this.size+ other.size <= maxSize){
+        for (int i = 0; i < other.size; i++){
+            this.add(other.getTrack(i));
+        }
+       }
     }
 
     /**
