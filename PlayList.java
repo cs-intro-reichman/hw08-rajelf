@@ -44,7 +44,7 @@ class PlayList {
             tracks[size++] = track;
             return true; // Successfully added the track
         }
-        return false; //playList is full, the track cannot be added
+        return false; // playList is full, the track cannot be added
     }
 
     /**
@@ -53,7 +53,7 @@ class PlayList {
      */
     //// For an efficient implementation, use StringBuilder.
     public String toString() {
-        //i don't know howto use StringBuilder :)
+        // i don't know howto use StringBuilder :)
 
         String result = ""; // Start with an empty string
         for (int i = 0; i < size; i++) {
@@ -67,8 +67,8 @@ class PlayList {
      * Removes the last track from this list. If the list is empty, does nothing.
      */
     public void removeLast() {
-        if (size > 0) { 
-            tracks[--size] = null; //  if playlist is not emplty, it remove the last track and decrements the size
+        if (size > 0) {
+            tracks[--size] = null; // if playlist is not emplty, it remove the last track and decrements the size
         }
     }
 
@@ -76,7 +76,7 @@ class PlayList {
     public int totalDuration() {
         int total = 0;
         for (int i = 0; i < size; i++) {
-            total += tracks[i].getDuration(); 
+            total += tracks[i].getDuration();
         }
         return total;
     }
@@ -86,13 +86,18 @@ class PlayList {
      * If such a track is not found, returns -1.
      */
     public int indexOf(String title) {
+        // Convert the search title to lowercase for case-insensitive comparison
+        String searchTitle = title.toLowerCase();
+
         for (int i = 0; i < size; i++) {
-            // Compare titles ignoring case differences
-            if (tracks[i].getTitle().equalsIgnoreCase(title)) {
+            // Convert each track's title to lowercase before comparing
+            if (tracks[i].getTitle().toLowerCase().equals(searchTitle)) {
                 return i;
             }
         }
-        return -1; // Track not found
+
+
+        return -1;
     }
 
     /**
@@ -104,11 +109,19 @@ class PlayList {
      * returns true.
      */
     public boolean add(int i, Track track) {
-        if (i < 0 || i > size || size == maxSize) return false; // Check for valid index and if there's space
-        System.arraycopy(tracks, i, tracks, i + 1, size - i); // Shift elements to make room for the new track
-        tracks[i] = track; 
-        size++; // make the size of the playlist bigger
-        return true;
+    if (i < 0 || i > size || size == maxSize) {
+        return false;
+    }
+    //shift elements to make room for the nown btrack
+    for (int j = size; j > i; j--) {
+        tracks[j] = tracks[j - 1];
+    }
+    // Insert the new track at index
+    tracks[i] = track;
+    // Increment the size of the playlist
+    size++;
+
+    return true;
     }
 
     /**
@@ -119,8 +132,12 @@ class PlayList {
      */
     public void remove(int i) {
         if (i >= 0 && i < size) { // Check for valid index
-            System.arraycopy(tracks, i + 1, tracks, i, size - i - 1); 
-            tracks[--size] = null; // Decrement size and clear the last element
+            System.arraycopy(tracks, i + 1, tracks, i, size - i - 1);
+            //juts discovered from System class, the most useful method. we copy elements from source array
+            // into destination array :) we start at position i+1 on sourdce array copies the array after the track i want to remove at i 
+            // we start the new destinastion array at i to override the old song at position i and the number of element we copy is 
+            // size - i - 1 since we dont include the element at index i in the count 
+            tracks[--size] = null; // reduce the size and clear the last element
         }
     }
 
@@ -130,14 +147,20 @@ class PlayList {
      * is negative or too big for this list, does nothing.
      */
     public void remove(String title) {
-        //// replace this comment with your code
+        int index = indexOf(title); // Find the index of the track
+        if (index != -1) { 
+            remove(index); // Remove the track at the found index
+        }
     }
 
     /**
      * Removes the first track from this list. If the list is empty, does nothing.
      */
     public void removeFirst() {
-        //// replace this comment with your code
+        if (size > 0) { 
+            System.arraycopy(tracks, 1, tracks, 0, size - 1); // Shift elements to remove the first track with the most useful sustem method
+            tracks[--size] = null;
+        }
     }
 
     /**
